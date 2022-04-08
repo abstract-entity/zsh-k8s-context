@@ -24,13 +24,16 @@ Add this function at the end of the file, before 'build_prompt', you can change 
         BACKGROUND=green
         FOREGROUND=white
       fi
-      prompt_segment $BACKGROUND $FOREGROUND "$K8S_CONTEXT"
-      prompt_end
+      prompt_segment $BACKGROUND $FOREGROUND "\u2388 $K8S_CONTEXT"
     }
 Update 'build_prompt' function with your 'prompt_k8s' function
 
     ## Main prompt
     build_prompt() {
+      RETVAL=$?
+      prompt_status
       ...
       prompt_k8s
+      ...
+      prompt_end
     }
