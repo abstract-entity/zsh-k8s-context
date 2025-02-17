@@ -10,17 +10,19 @@ Add this function at the end of the file, before 'build_prompt', you can change 
     #K8S env
     prompt_k8s() {
       (( $+commands[kubectl] )) || return
-
+    
       local K8S_CONTEXT=$(kubectl config current-context)
       local BACKGROUND=blue
       local FOREGROUND=white
       if [[ "$K8S_CONTEXT" == *"@"* ]]; then
         K8S_CONTEXT=$(echo $K8S_CONTEXT | grep -o '@.*' | cut -f2- -d@)
       fi
-      if [[ "$K8S_CONTEXT" == "Production" ]]; then
+      local K8S_CONTEXT_LOWER=$(echo "$K8S_CONTEXT" | tr '[:upper:]' '[:lower:]')
+    
+      if [[ "$K8S_CONTEXT_LOWER" == *"prod"* ]]; then
         BACKGROUND=red
         FOREGROUND=white
-      elif [[ "$K8S_CONTEXT" == "Development" ]]; then
+      elif [[ "$K8S_CONTEXT_LOWER" == *"dev"* ]]; then
         BACKGROUND=green
         FOREGROUND=white
       fi
